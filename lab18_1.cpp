@@ -27,7 +27,9 @@ double overlap(Rect A,Rect B)
 	W_ovlp[1] = min(A.x+A.w,B.x+B.w);
 	H_ovlp[0] = min(A.y,B.y);
 	H_ovlp[1] = max(A.y-A.h,B.y-B.h);
-	double X = abs(W_ovlp[1] - W_ovlp[0]);
-	double Y = abs(H_ovlp[1]- H_ovlp[0]);
-	return X*Y;
+	double X = W_ovlp[1] - W_ovlp[0];
+	double Y = H_ovlp[1] - H_ovlp[0];
+	cout << X << " " << Y << endl;
+	if(X < 0 && Y < 0) return 0;
+	else return abs(X)*abs(Y);
 }
