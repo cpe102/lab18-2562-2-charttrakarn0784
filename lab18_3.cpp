@@ -9,6 +9,10 @@ using namespace std;
 
 struct student{
 	//Define struct student with four member (name ,id , gender, gpa);
+	string name;
+	int id;
+	string gender;
+	float gpa;	
 };
 
 struct course{
@@ -20,7 +24,9 @@ struct course{
 
 student * findstudent(vector<student> allstudents,int key){ //Correct this line
 	for(unsigned int i = 0; i < allstudents.size(); i++){
-		if(allstudents[i].id  == key) return &allstudents[i];
+		if(allstudents[i].id  == key){
+			return &allstudents[i];
+		}
 	}
 }
 
@@ -49,43 +55,57 @@ void printreport(vector<course> allcourses){
 int main(){
 	ifstream student_file("students.txt");
 	ifstream course_file("courses.txt");
-	vector<student> allstudents;
+	vector<student> allstudents; //findname allstudents(0).name
 	vector<course> allcourses;
 	
 	string textline;
+	char name[99];
+	int ID;
+	char gender[2];
+	float grade;
 	
 	while(getline(student_file,textline)){
 		student s; 
-	
 		//Assign value to the members of struct s;
-	
+		sscanf(textline.c_str(),"%[^,],%d,%[^,],%f",name,&ID,gender,&grade);
+		s.name = name; 
+		s.id = ID; 
+		s.gender = gender;
+		s.gpa= grade;
 		allstudents.push_back(s); 		
 	}
 	
 	int state = 1;
 	while(getline(course_file,textline)){
+		int i = 0;
 		if(state == 1){
 			course c;
 			int loc = textline.find_first_of('(');
-			c.name = textline.substr(0,loc-1);
-			c.id = atof(textline.substr(loc+1,5).c_str());
-			getline(course_file,textline);
-			allcourses.push_back(c);
+			c.name = textline.substr(0,loc-1); // Fundamental of Cooking 
+			c.id = atof(textline.substr(loc+1,5).c_str()); // 69777
+			getline(course_file,textline); // dump >Lectures
+			allcourses.push_back(c); // 
 			state = 2;			
-		}else if(state == 2){
+		}else if(state == 2){ // for read LecturesName
 			if(textline == "> Students"){
 				state = 3;
 			}else{
 				//Append lecture_list;
+				//! allcourse[lately].lecture_list  
+				allcourses[i].lecture_list.push_back(textline); 
+				
 			}			
 		}else{
 			if(textline == "---------------------------------------"){
 				state = 1;
 			}else{
-				student *p = findstudent(allstudents,atof(textline.c_str()));
-				//Append student_list;
+				student *p = findstudent(allstudents,atof(textline.c_str())); //find No.students
+				//Append student_list 2line;
+				//! Append p allcourse[lately].student_list;
+				allcourses[i].student_list.push_back(p);
 			}
 		}
+		i++;
 	}
 	printreport(allcourses);
 	
