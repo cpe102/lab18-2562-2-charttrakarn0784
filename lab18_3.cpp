@@ -59,25 +59,25 @@ int main(){
 	vector<course> allcourses;
 	
 	string textline;
-	char name[99];
+	char Name;
 	int ID;
-	char gender[2];
+	char gndr;
 	float grade;
 	
 	while(getline(student_file,textline)){
 		student s; 
 		//Assign value to the members of struct s;
-		sscanf(textline.c_str(),"%[^,],%d,%[^,],%f",name,&ID,gender,&grade);
-		s.name = name; 
+		sscanf(textline.c_str(),"%[^,],%d,%[^,],%f",Name,ID,gndr,grade);
+		s.name = Name; 
 		s.id = ID; 
-		s.gender = gender;
-		s.gpa= grade;
+		s.gender = gndr;
+		s.gpa = grade;
 		allstudents.push_back(s); 		
 	}
 	
 	int state = 1;
+	int i = 0;
 	while(getline(course_file,textline)){
-		int i = 0;
 		if(state == 1){
 			course c;
 			int loc = textline.find_first_of('(');
@@ -92,11 +92,11 @@ int main(){
 			}else{
 				//Append lecture_list;
 				//! allcourse[lately].lecture_list  
-				allcourses[i].lecture_list.push_back(textline); 
-				
+				allcourses[i].lecture_list.push_back(textline);
 			}			
 		}else{
 			if(textline == "---------------------------------------"){
+				i++;
 				state = 1;
 			}else{
 				student *p = findstudent(allstudents,atof(textline.c_str())); //find No.students
@@ -105,7 +105,6 @@ int main(){
 				allcourses[i].student_list.push_back(p);
 			}
 		}
-		i++;
 	}
 	printreport(allcourses);
 	
