@@ -29,7 +29,7 @@ double overlap(Rect *A,Rect *B)
 	H_ovlp[0] = min((*A).y,(*B).y);
 	H_ovlp[1] = max((*A).y-(*A).h,(*B).y-(*B).h);
 	double X = W_ovlp[1] - W_ovlp[0];
-	double Y = H_ovlp[1] - H_ovlp[0];
-	if(X < 0 && Y < 0) return 0;
+	double Y = H_ovlp[0] - H_ovlp[1];
+	if(X < 0 || Y < 0) return 0;
 	else return abs(X)*abs(Y);
 }
