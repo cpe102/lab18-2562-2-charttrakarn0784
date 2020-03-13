@@ -22,7 +22,7 @@ struct course{
 	vector<student *> student_list;
 };
 
-student * findstudent(vector<student> allstudents,int key){ //Correct this line
+student * findstudent(vector<student> &allstudents,int key){ //Correct this line
 	for(unsigned int i = 0; i < allstudents.size(); i++){
 		if(allstudents[i].id  == key){
 			return &allstudents[i];
@@ -59,24 +59,19 @@ int main(){
 	vector<course> allcourses;
 	
 	string textline;
-	char Name;
-	int ID;
-	char gndr;
-	float grade;
 	
 	while(getline(student_file,textline)){
 		student s; 
 		//Assign value to the members of struct s;
-		sscanf(textline.c_str(),"%[^,],%d,%[^,],%f",Name,ID,gndr,grade);
-		s.name = Name; 
-		s.id = ID; 
-		s.gender = gndr;
-		s.gpa = grade;
+		char a[69];
+		char b[69];
+		sscanf(textline.c_str(),"%[^,],%d,%[^,],%f",a,&s.id,b,&s.gpa);
+		s.name = a;
+		s.gender = b;
 		allstudents.push_back(s); 		
 	}
 	
 	int state = 1;
-	int i = 0;
 	while(getline(course_file,textline)){
 		if(state == 1){
 			course c;
@@ -92,17 +87,16 @@ int main(){
 			}else{
 				//Append lecture_list;
 				//! allcourse[lately].lecture_list  
-				allcourses[i].lecture_list.push_back(textline);
+				allcourses[allcourses.size()-1].lecture_list.push_back(textline);
 			}			
 		}else{
 			if(textline == "---------------------------------------"){
-				i++;
 				state = 1;
 			}else{
 				student *p = findstudent(allstudents,atof(textline.c_str())); //find No.students
 				//Append student_list 2line;
 				//! Append p allcourse[lately].student_list;
-				allcourses[i].student_list.push_back(p);
+				allcourses[allcourses.size()-1].student_list.push_back(p);
 			}
 		}
 	}
